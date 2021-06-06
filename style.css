@@ -1,0 +1,14 @@
+.list{
+    min-height: 300px;
+    max-height: 300px;
+    overflow-y: scroll;
+
+}
+
+.list-item .card-header p{
+    padding:5px 10px;
+}
+
+*::-webkit-scrollbar-thumb{
+    background-color: aqua;
+}
