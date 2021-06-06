@@ -10,14 +10,14 @@ for (let i = 0; i < list_items.length; i++) {
 		draggedItem = item;
 		setTimeout(function () {
 			item.style.display = 'none';
-		}, 0)
+		}, 100)
 	});
 
 	item.addEventListener('dragend', function () {
 		setTimeout(function () {
 			draggedItem.style.display = 'block';
 			draggedItem = null;
-		}, 0);
+		}, 100);
 	})
 
 	for (let j = 0; j < lists.length; j ++) {
@@ -38,7 +38,7 @@ for (let i = 0; i < list_items.length; i++) {
 
 		list.addEventListener('drop', function (e) {
 			console.log('drop');
-			this.append(draggedItem);
+			this.prepend(draggedItem);
 			this.style.backgroundColor = 'rgba(0, 0, 0, 0.1)';
 		});
 	}
