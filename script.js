@@ -23,19 +23,25 @@ var donebtn = document.getElementById("donebtn");
 var adds = document.getElementsByClassName("add");
 // currently dragged item
 let draggedItem = null;
+let draggedItemValue;
 todobtn.addEventListener("click", (e) => {
     if (document.getElementsByTagName("form").length < 1) {
         var div = document.createElement("div");
-        div.innerHTML = '<div class="list-item card"> <div class="card-header"> <form action=""><input class="input" placeholder="Write and Press Enter"/></form> <div class="delete" style="position: absolute; right: 0;"></div></div></div>';
+        div.innerHTML = '<div class="list-item card"> <div class="card-header"> <form action=""><input class="input" placeholder="Press Enter to Add or Esc to Cancel"/></form></div></div>';
         div.autofocus = true;
         todo.prepend(div);
         document.getElementsByTagName("form")[0].addEventListener("submit", (e) => {
             e.preventDefault();
-            var value = document.getElementsByTagName("input")[0].value;
-            todo.removeChild(document.getElementsByTagName("input")[0].parentElement.parentElement.parentElement.parentElement);
-            var element = document.createElement("div");
-            todos.unshift(value);
-            render();
+            var value = (document.getElementsByTagName("input")[0].value).trim();
+            if (value) {
+                todo.removeChild(document.getElementsByTagName("input")[0].parentElement.parentElement.parentElement.parentElement);
+                var element = document.createElement("div");
+                todos.unshift(value);
+                render();
+            }
+            else {
+                todo.removeChild(document.getElementsByTagName("input")[0].parentElement.parentElement.parentElement.parentElement);
+            }
         });
     }
 });
@@ -63,13 +69,28 @@ const render = () => {
     list_items = document.querySelectorAll('.list-item');
     deletes = document.querySelectorAll('.delete');
     deletes.forEach((item) => {
-        console.log(item.parentElement.firstElementChild);
+        item.addEventListener("click", (e) => {
+            console.log(e.target);
+            var parent = e.target.parentElement.parentElement.parentElement.id;
+            if (parent == "todo") {
+                todos.splice(todos.indexOf(e.target.parentElement.firstElementChild.innerHTML), 1);
+            }
+            else if (parent == "process") {
+                processes.splice(processes.indexOf(e.target.parentElement.firstElementChild.innerHTML), 1);
+            }
+            else if (parent == "done") {
+                dones.splice(dones.indexOf(e.target.parentElement.firstElementChild.innerHTML), 1);
+            }
+            e.target.parentElement.parentElement.parentElement.removeChild(e.target.parentElement.parentElement);
+            console.log(todos, processes, dones);
+        });
     });
     console.log(deletes);
     for (let i = 0; i < list_items.length; i++) {
         const item = list_items[i];
         item.addEventListener('dragstart', function () {
             draggedItem = item;
+            draggedItemValue = item.firstElementChild.firstElementChild.innerHTML;
             setTimeout(function () {
                 item.style.display = 'none';
             }, 100);
@@ -112,7 +133,28 @@ for (let j = 0; j < lists.length; j++) {
         this.style.backgroundColor = 'rgba(0, 0, 0, 0.1)';
     });
     list.addEventListener('drop', function (e) {
+        var parent = draggedItem.parentElement.id;
+        console.log();
+        if (parent == "todo") {
+            todos.splice(todos.indexOf(draggedItem.firstElementChild.firstElementChild.innerHTML), 1);
+        }
+        else if (parent == "process") {
+            processes.splice(processes.indexOf(draggedItem.firstElementChild.firstElementChild.innerHTML), 1);
+        }
+        else if (parent == "done") {
+            dones.splice(dones.indexOf(draggedItem.firstElementChild.firstElementChild.innerHTML), 1);
+        }
         this.prepend(draggedItem);
+        if (this.id == "todo") {
+            todos.unshift(draggedItem.firstElementChild.firstElementChild.innerHTML);
+        }
+        else if (this.id == "process") {
+            processes.unshift(draggedItem.firstElementChild.firstElementChild.innerHTML);
+        }
+        else if (this.id == "done") {
+            dones.unshift(draggedItem.firstElementChild.firstElementChild.innerHTML);
+        }
+        console.log(todos, processes, dones);
         this.style.backgroundColor = 'rgba(0, 0, 0, 0.1)';
     });
 }
