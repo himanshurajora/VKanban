@@ -268,6 +268,7 @@ function exportKanban(){
 		"processes": processes,
 		"dones": dones,
 	}
+	
 	const jsonStr = JSON.stringify(JsontoExport);
 	
 	let element = document.createElement('a');

@@ -10,7 +10,7 @@ var dones = [];
 load();
 // all feature buttons
 var erasebtn = document.getElementById("erase");
-erasebtn.addEventListener("click", (e) => {
+erasebtn.addEventListener("click", function (e) {
     erase();
 });
 // all three lists saprate
@@ -27,16 +27,16 @@ var adds = document.getElementsByClassName("add");
 var exportbtn = document.getElementById("export");
 var importbtn = document.getElementById("import");
 // currently dragged item
-let draggedItem = null;
-let draggedItemValue;
-todobtn.addEventListener("click", (e) => {
+var draggedItem = null;
+var draggedItemValue;
+todobtn.addEventListener("click", function (e) {
     if (document.getElementsByTagName("form").length < 1) {
         var div = document.createElement("div");
         div.innerHTML = '<div class="list-item card"> <div class="card-header"> <form action=""><input class="input" placeholder="Press Enter to Add or Esc to Cancel"/></form></div></div>';
         div.autofocus = true;
         todo.prepend(div);
         document.getElementsByTagName("input")[0].focus();
-        document.getElementsByTagName("form")[0].addEventListener("submit", (e) => {
+        document.getElementsByTagName("form")[0].addEventListener("submit", function (e) {
             e.preventDefault();
             var value = (document.getElementsByTagName("input")[0].value).trim();
             if (value) {
@@ -52,37 +52,37 @@ todobtn.addEventListener("click", (e) => {
     }
 });
 //Export Button and ImportButton Events
-exportbtn.addEventListener("click", () => {
+exportbtn.addEventListener("click", function () {
     exportKanban();
 });
-importbtn.addEventListener("click", () => {
+importbtn.addEventListener("click", function () {
     importKanban();
 });
-const render = () => {
+var render = function () {
     //render to do list
     var all_todos = "";
-    todos.forEach(val => {
+    todos.forEach(function (val) {
         var element = getListItem(val);
         all_todos += element;
     });
     todo.innerHTML = all_todos;
     //render progress list
     var all_process = "";
-    processes.forEach(val => {
+    processes.forEach(function (val) {
         var element = getListItem(val);
         all_process += element;
     });
     process.innerHTML = all_process;
     var all_dones = "";
-    dones.forEach((val, index) => {
+    dones.forEach(function (val, index) {
         var element = getListItem(val);
         all_dones += element;
     });
     done.innerHTML = all_dones;
     list_items = document.querySelectorAll('.list-item');
     deletes = document.querySelectorAll('.delete');
-    deletes.forEach((item) => {
-        item.addEventListener("click", (e) => {
+    deletes.forEach(function (item) {
+        item.addEventListener("click", function (e) {
             console.log(e.target);
             var parent = e.target.parentElement.parentElement.parentElement.id;
             var item = e.target.parentElement.firstElementChild.innerHTML;
@@ -100,8 +100,8 @@ const render = () => {
         });
     });
     console.log(deletes);
-    for (let i = 0; i < list_items.length; i++) {
-        const item = list_items[i];
+    var _loop_1 = function (i) {
+        var item = list_items[i];
         item.addEventListener('dragstart', function () {
             draggedItem = item;
             draggedItemValue = item.firstElementChild.firstElementChild.innerHTML;
@@ -115,9 +115,12 @@ const render = () => {
                 draggedItem = null;
             }, 100);
         });
+    };
+    for (var i = 0; i < list_items.length; i++) {
+        _loop_1(i);
     }
-    for (let i = 0; i < list_items.length; i++) {
-        const item = list_items[i];
+    var _loop_2 = function (i) {
+        var item = list_items[i];
         item.addEventListener('dragstart', function () {
             draggedItem = item;
             setTimeout(function () {
@@ -135,13 +138,16 @@ const render = () => {
                 draggedItem = null;
             }, 100);
         });
+    };
+    for (var i = 0; i < list_items.length; i++) {
+        _loop_2(i);
     }
 };
 // tun on startup
 render();
 // Drag events for list-item container called list
-for (let j = 0; j < lists.length; j++) {
-    const list = lists[j];
+for (var j = 0; j < lists.length; j++) {
+    var list = lists[j];
     list.addEventListener('dragover', function (e) {
         e.preventDefault();
     });
@@ -213,14 +219,14 @@ function load() {
     });
 }
 function exportKanban() {
-    const filename = 'kanban.json';
+    var filename = 'kanban.json';
     var JsontoExport = {
         "todos": todos,
         "processes": processes,
-        "dones": dones,
+        "dones": dones
     };
-    const jsonStr = JSON.stringify(JsontoExport);
-    let element = document.createElement('a');
+    var jsonStr = JSON.stringify(JsontoExport);
+    var element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(jsonStr));
     element.setAttribute('download', filename);
     element.style.display = 'none';
