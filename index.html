@@ -12,23 +12,23 @@
 </head>
 
 <body>
-    <div class="container" style="min-width: 700px; min-height: 300px;">
+    <div class="container" style="min-width: 700px; min-height: 350px;">
         <div class="columns is-mobile" style="padding: 5px;">
             <div class="column is-4">
-                <p class="title is-5  has-text-centered">To Do <span><button class="add green"><span class="add-text"><i
-                                    class="fa fa-plus" aria-hidden="true"></i></span></button>
+                <p class="title is-5  has-text-centered">To Do <span><button class="add green" id="todobtn"><span
+                                class="add-text"><i class="fa fa-plus" aria-hidden="true"></i></span></button>
                     </span>
                 </p>
 
-                <div class="list">
+                <div class="list" id="todo">
                     <div class="list-item card" draggable="true">
-                        <div class="card-header">  
-                            <p>sdghsgfsf There This is My First Task Bro lorem34</p>
+                        <div class="card-header">
+                            <p>sdghsgfs</p>
                             <div class="delete"></div>
                         </div>
                     </div>
                     <div class="list-item card" draggable="true">
-                        <div class="card-header">  
+                        <div class="card-header">
                             <p>Hello There This is My First Task Bro lorem34</p>
                             <div class="delete"></div>
                         </div>
@@ -36,20 +36,20 @@
                 </div>
             </div>
             <div class="column is-4">
-                <p class="title is-5  has-text-centered">In Progress <span><button class="add blue"><span
+                <p class="title is-5  has-text-centered">In Progress <span><button class="add blue" id="processbtn"><span
                                 class="add-text"><i class="fa fa-plus" aria-hidden="true"></i></span></button>
                     </span>
                 </p>
-                <div class="list">
+                <div class="list" id="process">
 
                 </div>
             </div>
             <div class="column is-4">
-                <p class="title is-5 has-text-centered">Done <span><button class="add yellow"><span class="add-text"><i
-                                    class="fa fa-plus" aria-hidden="true"></i></span></button>
+                <p class="title is-5 has-text-centered">Done <span><button class="add yellow"><span class="add-text"
+                                id="donebtn"><i class="fa fa-plus" aria-hidden="true"></i></span></button>
                     </span>
                 </p>
-                <div class="list">
+                <div class="list" id="done">
 
                 </div>
             </div>
@@ -59,10 +59,13 @@
     <div class="foot">
         <ul>
             <li>
-                <button class="add blue"><i class="fas fa-file-import"></i> &nbsp;Import</button>
+                <button class="features red" id="erase"><i class="fa fa-eraser" aria-hidden="true"></i> &nbsp;Erase Board</button>
             </li>
             <li>
-                <button class="add yellow"><i class="fas fa-file-export"></i> &nbsp; Export</button>
+                <button class="features blue"><i class="fas fa-file-import"></i> &nbsp;Import</button>
+            </li>
+            <li>
+                <button class="features yellow"><i class="fas fa-file-export"></i> &nbsp; Export</button>
             </li>
 
         </ul>
