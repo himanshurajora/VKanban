@@ -1,13 +1,21 @@
 
+interface Data{
+	kanban_todo : String[]
+	kanban_processes: String[]
+	kanban_dones: String[]
+}
+
 // all lists and list-items together
 var list_items: NodeList;
 var lists = document.querySelectorAll('.list');
 var deletes: NodeList;
 
 //different arrays for storing kanban data
-var todos: String[] = ["hello", "there", "what's", "up"];
-var processes: String[] = ["hello", "there", "what's", "up"];
-var dones: String[] = ["hello", "there", "what's", "up"];
+var todos: String[] = [];
+var processes: String[] = [];
+var dones: String[] = [];
+// load already stored data in arrays if available
+load();
 
 // all feature buttons
 var erasebtn: HTMLElement = document.getElementById("erase");
@@ -43,6 +51,7 @@ todobtn.addEventListener("click", (e) => {
 				todo.removeChild(document.getElementsByTagName("input")[0].parentElement.parentElement.parentElement.parentElement);
 				var element: HTMLElement = document.createElement("div");
 				todos.unshift(value);
+				store();
 				render();
 			}
 			else{
@@ -83,18 +92,19 @@ const render = () => {
 		item.addEventListener("click", (e) => {
 			console.log(e.target);
 			var parent = (e.target as HTMLElement).parentElement.parentElement.parentElement.id;
+			var item = (e.target as HTMLElement).parentElement.firstElementChild.innerHTML;
 			if (parent == "todo") {
-				todos.splice(todos.indexOf((e.target as HTMLElement).parentElement.firstElementChild.innerHTML), 1);
+				todos.splice(todos.indexOf(item), 1);
 			}
 			else if (parent == "process") {
-				processes.splice(processes.indexOf((e.target as HTMLElement).parentElement.firstElementChild.innerHTML), 1);
+				processes.splice(processes.indexOf(item), 1);
 			}
 			else if (parent == "done") {
-				dones.splice(dones.indexOf((e.target as HTMLElement).parentElement.firstElementChild.innerHTML), 1);
+				dones.splice(dones.indexOf(item), 1);
 			}
 
 			(e.target as HTMLElement).parentElement.parentElement.parentElement.removeChild((e.target as HTMLElement).parentElement.parentElement)
-			console.log(todos, processes, dones)
+			store()
 		})
 	})
 
@@ -130,7 +140,11 @@ const render = () => {
 
 		item.addEventListener('dragend', function () {
 			setTimeout(function () {
-				(draggedItem as HTMLElement).style.display = 'block';
+				try {
+					(draggedItem as HTMLElement).style.display = 'block';
+				} catch (error) {
+					//passs
+				}
 				draggedItem = null;
 			}, 100);
 		})
@@ -162,29 +176,30 @@ for (let j = 0; j < lists.length; j++) {
 	list.addEventListener('drop', function (e) {
 		var parent = draggedItem.parentElement.id;
 		console.log();
+		var item = (draggedItem as HTMLElement).firstElementChild.firstElementChild.innerHTML
 		if (parent == "todo") {
-			todos.splice(todos.indexOf((draggedItem as HTMLElement).firstElementChild.firstElementChild.innerHTML), 1);
+			todos.splice(todos.indexOf(item), 1);
 		}
 		else if (parent == "process") {
-			processes.splice(processes.indexOf((draggedItem as HTMLElement).firstElementChild.firstElementChild.innerHTML), 1);
+			processes.splice(processes.indexOf(item), 1);
 		}
 		else if (parent == "done") {
-			dones.splice(dones.indexOf((draggedItem as HTMLElement).firstElementChild.firstElementChild.innerHTML), 1);
+			dones.splice(dones.indexOf(item), 1);
 		}
 
 		this.prepend(draggedItem);
 
 		if (this.id == "todo") {
-			todos.unshift((draggedItem as HTMLElement).firstElementChild.firstElementChild.innerHTML)
+			todos.unshift(item)
 		}
 		else if (this.id == "process") {
-			processes.unshift((draggedItem as HTMLElement).firstElementChild.firstElementChild.innerHTML)
+			processes.unshift(item)
 		}
 		else if (this.id == "done") {
-			dones.unshift((draggedItem as HTMLElement).firstElementChild.firstElementChild.innerHTML)
+			dones.unshift(item)
 		}
 
-		console.log(todos, processes, dones)
+		store()
 
 		this.style.backgroundColor = 'rgba(0, 0, 0, 0.1)';
 	});
@@ -201,13 +216,33 @@ function erase() {
 	todos = []
 	processes = []
 	dones = []
+	store()
 	render()
 }
 
+function store(){
+	chrome.storage.local.set({ kanban_todo: todos });
+	chrome.storage.local.set({ kanban_processes: processes });
+	chrome.storage.local.set({ kanban_dones: dones });
+}
 
 
-
-
+function load(){
+	chrome.storage.local.get(['kanban_todo', 'kanban_processes', 'kanban_dones'], function (result:Data) {
+        if (result.kanban_todo) {
+            todos = result.kanban_todo;
+            render()
+        }
+		if (result.kanban_todo) {
+            processes = result.kanban_processes;
+            render()
+        }
+		if (result.kanban_todo) {
+            dones = result.kanban_dones;
+            render()
+        }
+    });
+}
 
 
 

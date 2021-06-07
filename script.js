@@ -3,9 +3,11 @@ var list_items;
 var lists = document.querySelectorAll('.list');
 var deletes;
 //different arrays for storing kanban data
-var todos = ["hello", "there", "what's", "up"];
-var processes = ["hello", "there", "what's", "up"];
-var dones = ["hello", "there", "what's", "up"];
+var todos = [];
+var processes = [];
+var dones = [];
+// load already stored data in arrays if available
+load();
 // all feature buttons
 var erasebtn = document.getElementById("erase");
 erasebtn.addEventListener("click", (e) => {
@@ -37,6 +39,7 @@ todobtn.addEventListener("click", (e) => {
                 todo.removeChild(document.getElementsByTagName("input")[0].parentElement.parentElement.parentElement.parentElement);
                 var element = document.createElement("div");
                 todos.unshift(value);
+                store();
                 render();
             }
             else {
@@ -72,17 +75,18 @@ const render = () => {
         item.addEventListener("click", (e) => {
             console.log(e.target);
             var parent = e.target.parentElement.parentElement.parentElement.id;
+            var item = e.target.parentElement.firstElementChild.innerHTML;
             if (parent == "todo") {
-                todos.splice(todos.indexOf(e.target.parentElement.firstElementChild.innerHTML), 1);
+                todos.splice(todos.indexOf(item), 1);
             }
             else if (parent == "process") {
-                processes.splice(processes.indexOf(e.target.parentElement.firstElementChild.innerHTML), 1);
+                processes.splice(processes.indexOf(item), 1);
             }
             else if (parent == "done") {
-                dones.splice(dones.indexOf(e.target.parentElement.firstElementChild.innerHTML), 1);
+                dones.splice(dones.indexOf(item), 1);
             }
             e.target.parentElement.parentElement.parentElement.removeChild(e.target.parentElement.parentElement);
-            console.log(todos, processes, dones);
+            store();
         });
     });
     console.log(deletes);
@@ -112,7 +116,12 @@ const render = () => {
         });
         item.addEventListener('dragend', function () {
             setTimeout(function () {
-                draggedItem.style.display = 'block';
+                try {
+                    draggedItem.style.display = 'block';
+                }
+                catch (error) {
+                    //passs
+                }
                 draggedItem = null;
             }, 100);
         });
@@ -135,26 +144,27 @@ for (let j = 0; j < lists.length; j++) {
     list.addEventListener('drop', function (e) {
         var parent = draggedItem.parentElement.id;
         console.log();
+        var item = draggedItem.firstElementChild.firstElementChild.innerHTML;
         if (parent == "todo") {
-            todos.splice(todos.indexOf(draggedItem.firstElementChild.firstElementChild.innerHTML), 1);
+            todos.splice(todos.indexOf(item), 1);
         }
         else if (parent == "process") {
-            processes.splice(processes.indexOf(draggedItem.firstElementChild.firstElementChild.innerHTML), 1);
+            processes.splice(processes.indexOf(item), 1);
         }
         else if (parent == "done") {
-            dones.splice(dones.indexOf(draggedItem.firstElementChild.firstElementChild.innerHTML), 1);
+            dones.splice(dones.indexOf(item), 1);
         }
         this.prepend(draggedItem);
         if (this.id == "todo") {
-            todos.unshift(draggedItem.firstElementChild.firstElementChild.innerHTML);
+            todos.unshift(item);
         }
         else if (this.id == "process") {
-            processes.unshift(draggedItem.firstElementChild.firstElementChild.innerHTML);
+            processes.unshift(item);
         }
         else if (this.id == "done") {
-            dones.unshift(draggedItem.firstElementChild.firstElementChild.innerHTML);
+            dones.unshift(item);
         }
-        console.log(todos, processes, dones);
+        store();
         this.style.backgroundColor = 'rgba(0, 0, 0, 0.1)';
     });
 }
@@ -167,5 +177,27 @@ function erase() {
     todos = [];
     processes = [];
     dones = [];
+    store();
     render();
+}
+function store() {
+    chrome.storage.local.set({ kanban_todo: todos });
+    chrome.storage.local.set({ kanban_processes: processes });
+    chrome.storage.local.set({ kanban_dones: dones });
+}
+function load() {
+    chrome.storage.local.get(['kanban_todo', 'kanban_processes', 'kanban_dones'], function (result) {
+        if (result.kanban_todo) {
+            todos = result.kanban_todo;
+            render();
+        }
+        if (result.kanban_todo) {
+            processes = result.kanban_processes;
+            render();
+        }
+        if (result.kanban_todo) {
+            dones = result.kanban_dones;
+            render();
+        }
+    });
 }
