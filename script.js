@@ -23,6 +23,9 @@ var processbtn = document.getElementById("processbtn");
 var donebtn = document.getElementById("donebtn");
 //Add buttons click events
 var adds = document.getElementsByClassName("add");
+//Export and Import Buttons
+var exportbtn = document.getElementById("export");
+var importbtn = document.getElementById("import");
 // currently dragged item
 let draggedItem = null;
 let draggedItemValue;
@@ -47,6 +50,13 @@ todobtn.addEventListener("click", (e) => {
             }
         });
     }
+});
+//Export Button and ImportButton Events
+exportbtn.addEventListener("click", () => {
+    exportKanban();
+});
+importbtn.addEventListener("click", () => {
+    importKanban();
 });
 const render = () => {
     //render to do list
@@ -127,6 +137,7 @@ const render = () => {
         });
     }
 };
+// tun on startup
 render();
 // Drag events for list-item container called list
 for (let j = 0; j < lists.length; j++) {
@@ -200,4 +211,22 @@ function load() {
             render();
         }
     });
+}
+function exportKanban() {
+    const filename = 'kanban.json';
+    var JsontoExport = {
+        "todos": todos,
+        "processes": processes,
+        "dones": dones,
+    };
+    const jsonStr = JSON.stringify(JsontoExport);
+    let element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(jsonStr));
+    element.setAttribute('download', filename);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+}
+function importKanban() {
 }

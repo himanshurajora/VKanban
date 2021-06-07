@@ -5,6 +5,7 @@ interface Data{
 	kanban_dones: String[]
 }
 
+
 // all lists and list-items together
 var list_items: NodeList;
 var lists = document.querySelectorAll('.list');
@@ -35,6 +36,11 @@ var donebtn: HTMLElement = document.getElementById("donebtn");
 //Add buttons click events
 var adds = document.getElementsByClassName("add");
 
+
+//Export and Import Buttons
+var exportbtn: HTMLElement = document.getElementById("export");
+var importbtn: HTMLElement = document.getElementById("import");
+
 // currently dragged item
 let draggedItem: Node = null;
 let draggedItemValue: string;
@@ -61,6 +67,14 @@ todobtn.addEventListener("click", (e) => {
 	}
 })
 
+//Export Button and ImportButton Events
+exportbtn.addEventListener("click", ()=>{
+	exportKanban();
+})
+
+importbtn.addEventListener("click", ()=>{
+	importKanban();
+})
 const render = () => {
 	//render to do list
 	var all_todos: string = "";
@@ -152,6 +166,7 @@ const render = () => {
 
 }
 
+// tun on startup
 render();
 
 
@@ -211,6 +226,7 @@ for (let j = 0; j < lists.length; j++) {
 function getListItem(val: String): String {
 	return '<div class="list-item card" draggable="true"> <div class="card-header"> <p>' + val + '</p><div class="delete" style="position: absolute; right: 0;"></div></div></div>';
 }
+
 // erases entire kanban
 function erase() {
 	todos = []
@@ -245,13 +261,31 @@ function load(){
 }
 
 
+function exportKanban(){
+	const filename = 'kanban.json';
+	var JsontoExport  =  {
+		"todos": todos,
+		"processes": processes,
+		"dones": dones,
+	}
+	const jsonStr = JSON.stringify(JsontoExport);
+	
+	let element = document.createElement('a');
+	element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(jsonStr));
+	element.setAttribute('download', filename);
+	
+	element.style.display = 'none';
+	document.body.appendChild(element);
+	
+	element.click();
+	
+	document.body.removeChild(element);
+}
 
-
-
-
-
-
-
+function importKanban()
+{
+	
+}
 
 
 
