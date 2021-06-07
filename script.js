@@ -32,12 +32,12 @@ todobtn.addEventListener("click", (e) => {
         div.innerHTML = '<div class="list-item card"> <div class="card-header"> <form action=""><input class="input" placeholder="Press Enter to Add or Esc to Cancel"/></form></div></div>';
         div.autofocus = true;
         todo.prepend(div);
+        document.getElementsByTagName("input")[0].focus();
         document.getElementsByTagName("form")[0].addEventListener("submit", (e) => {
             e.preventDefault();
             var value = (document.getElementsByTagName("input")[0].value).trim();
             if (value) {
                 todo.removeChild(document.getElementsByTagName("input")[0].parentElement.parentElement.parentElement.parentElement);
-                var element = document.createElement("div");
                 todos.unshift(value);
                 store();
                 render();
