@@ -1,7 +1,8 @@
 
 // all lists and list-items together
-var list_items: NodeList = document.querySelectorAll('.list-item');
-var lists: NodeList = document.querySelectorAll('.list');
+var list_items: NodeList;
+var lists = document.querySelectorAll('.list');
+var deletes: NodeList;
 
 // all feature buttons
 var erasebtn: HTMLElement = document.getElementById("erase");
@@ -61,10 +62,28 @@ const render = () => {
 	done.innerHTML = all_dones;
 
 	list_items = document.querySelectorAll('.list-item');
-	lists = document.querySelectorAll('.list');
+	deletes = document.querySelectorAll('.delete');
 	for (let i = 0; i < list_items.length; i++) {
 		const item: Node = list_items[i];
 
+		item.addEventListener('dragstart', function () {
+			draggedItem = item;
+			setTimeout(function () {
+				(item as HTMLElement).style.display = 'none';
+			}, 100)
+		});
+
+		item.addEventListener('dragend', function () {
+			setTimeout(function () {
+				(draggedItem as HTMLElement).style.display = 'block';
+				draggedItem = null;
+			}, 100);
+		})
+	}
+
+	for (let i = 0; i < list_items.length; i++) {
+		const item: Node = list_items[i];
+		
 		item.addEventListener('dragstart', function () {
 			draggedItem = item;
 			setTimeout(function () {
@@ -84,6 +103,9 @@ const render = () => {
 
 render();
 
+
+// Drag events for list-item container called list
+
 for (let j = 0; j < lists.length; j++) {
 	const list: Node = lists[j];
 
@@ -93,7 +115,7 @@ for (let j = 0; j < lists.length; j++) {
 
 	list.addEventListener('dragenter', function (e) {
 		e.preventDefault();
-		this.style.backgroundColor = 'rgba(0, 0, 0, 0.2)';
+		this.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
 	});
 
 	list.addEventListener('dragleave', function (e) {
@@ -121,3 +143,24 @@ function erase() {
 	dones = []
 	render()
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,4 +1,8 @@
 .list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    flex-wrap:wrap;
     min-height: 300px;
     max-height: 300px;
     overflow-y: scroll;
@@ -7,6 +11,16 @@
 
 .list-item .card-header p {
     padding: 5px 10px;
+    /* user-select: none; */
+}
+
+#head{
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently */
 }
 
 .list-item {
@@ -14,8 +28,8 @@
 }
 
 ::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+    width: 10px;
+    height: 10px;
     background-color: rgba(255, 255, 255, 0);
     border-radius: 100px;
 }
@@ -25,13 +39,13 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #a2e5ff;
+    background: linear-gradient(to bottom, rgb(62, 147, 245) , rgb(0, 195, 255));
     border-radius: 100px;
 }
 
 ::-webkit-scrollbar-thumb:hover,
 ::-webkit-scrollbar-thumb:active {
-    background: #a4e5ff;
+    background: linear-gradient(to bottom, rgb(15, 124, 248) , rgb(62, 178, 255));
 }
 
 .add {

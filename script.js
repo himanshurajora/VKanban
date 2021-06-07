@@ -1,6 +1,7 @@
 // all lists and list-items together
-var list_items = document.querySelectorAll('.list-item');
+var list_items;
 var lists = document.querySelectorAll('.list');
+var deletes;
 // all feature buttons
 var erasebtn = document.getElementById("erase");
 erasebtn.addEventListener("click", (e) => {
@@ -48,7 +49,22 @@ const render = () => {
     });
     done.innerHTML = all_dones;
     list_items = document.querySelectorAll('.list-item');
-    lists = document.querySelectorAll('.list');
+    deletes = document.querySelectorAll('.delete');
+    for (let i = 0; i < list_items.length; i++) {
+        const item = list_items[i];
+        item.addEventListener('dragstart', function () {
+            draggedItem = item;
+            setTimeout(function () {
+                item.style.display = 'none';
+            }, 100);
+        });
+        item.addEventListener('dragend', function () {
+            setTimeout(function () {
+                draggedItem.style.display = 'block';
+                draggedItem = null;
+            }, 100);
+        });
+    }
     for (let i = 0; i < list_items.length; i++) {
         const item = list_items[i];
         item.addEventListener('dragstart', function () {
@@ -66,6 +82,7 @@ const render = () => {
     }
 };
 render();
+// Drag events for list-item container called list
 for (let j = 0; j < lists.length; j++) {
     const list = lists[j];
     list.addEventListener('dragover', function (e) {
@@ -73,7 +90,7 @@ for (let j = 0; j < lists.length; j++) {
     });
     list.addEventListener('dragenter', function (e) {
         e.preventDefault();
-        this.style.backgroundColor = 'rgba(0, 0, 0, 0.2)';
+        this.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
     });
     list.addEventListener('dragleave', function (e) {
         this.style.backgroundColor = 'rgba(0, 0, 0, 0.1)';
