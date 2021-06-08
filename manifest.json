@@ -1,12 +1,17 @@
 {
     "name": "VKanban",
-    "version":"0.1",
-    "manifest_version":3,
-    "background":{
-        "service_worker":"script.js"
+    "version": "0.1",
+    "manifest_version": 3,
+    "background": {
+        "service_worker": "script.js"
     },
-    "permissions":["storage"],
-    "action":{
-        "default_popup":"index.html"
+    "permissions": [
+        "storage"
+    ],
+    "action": {
+        "default_popup": "index.html"
+    },
+    "icons": {
+        "48": "logo.png"
     }
 }
