@@ -283,10 +283,10 @@ function exportKanban(){
 	document.body.removeChild(element);
 }
 
-function importKanban()
-{
+// function importKanban()
+// {
 	
-}
+// }
 
 
 

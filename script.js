@@ -234,5 +234,6 @@ function exportKanban() {
     element.click();
     document.body.removeChild(element);
 }
-function importKanban() {
-}
+// function importKanban()
+// {
+// }
