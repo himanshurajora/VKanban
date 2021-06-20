@@ -39,7 +39,7 @@ var adds = document.getElementsByClassName("add");
 
 //Export and Import Buttons
 var exportbtn: HTMLElement = document.getElementById("export");
-var importbtn: HTMLElement = document.getElementById("import");
+// var importbtn: HTMLElement = document.getElementById("import");
 
 // currently dragged item
 let draggedItem: Node = null;
@@ -72,9 +72,9 @@ exportbtn.addEventListener("click", ()=>{
 	exportKanban();
 })
 
-importbtn.addEventListener("click", ()=>{
-	importKanban();
-})
+// importbtn.addEventListener("click", ()=>{
+// 	importKanban();
+// })
 const render = () => {
 	//render to do list
 	var all_todos: string = "";
@@ -268,29 +268,22 @@ function exportKanban(){
 		"processes": processes,
 		"dones": dones,
 	}
-	
+
 	const jsonStr = JSON.stringify(JsontoExport);
-	
+
 	let element = document.createElement('a');
 	element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(jsonStr));
 	element.setAttribute('download', filename);
-	
+
 	element.style.display = 'none';
 	document.body.appendChild(element);
-	
+
 	element.click();
-	
+
 	document.body.removeChild(element);
 }
 
 // function importKanban()
 // {
-	
+
 // }
-
-
-
-
-
-
-

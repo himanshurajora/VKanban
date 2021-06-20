@@ -25,7 +25,7 @@ var donebtn = document.getElementById("donebtn");
 var adds = document.getElementsByClassName("add");
 //Export and Import Buttons
 var exportbtn = document.getElementById("export");
-var importbtn = document.getElementById("import");
+// var importbtn: HTMLElement = document.getElementById("import");
 // currently dragged item
 var draggedItem = null;
 var draggedItemValue;
@@ -55,9 +55,9 @@ todobtn.addEventListener("click", function (e) {
 exportbtn.addEventListener("click", function () {
     exportKanban();
 });
-importbtn.addEventListener("click", function () {
-    importKanban();
-});
+// importbtn.addEventListener("click", ()=>{
+// 	importKanban();
+// })
 var render = function () {
     //render to do list
     var all_todos = "";
